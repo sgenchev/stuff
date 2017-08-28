@@ -1,0 +1,2 @@
+DOCKER_OPTS="-v /data/consul:/consul/data -e 'CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"bootstrap\": true, \"server\": true}'"
+BIND_IP='127.0.0.1'

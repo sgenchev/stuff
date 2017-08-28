@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker container haproxy service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+EnvironmentFile=-/etc/default/docker-consul
+ExecStart=/usr/bin/docker run --name consul --bind=host $DOCKER_OPTS consul agent -bind=$BIND_IP
+ExecStop=/usr/bin/docker stop -t 2 haproxy; /usr/bin/docker rm haproxy
+ExecReload=/usr/bin/docker kill -s HUP haproxy
+
+[Install]
+WantedBy=multi-user.target
+
