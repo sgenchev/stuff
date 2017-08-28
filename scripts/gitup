@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# Script that do dirty git work.
+
+# `git add -A` is almost equivalent of `hg addremove`. Except it starts 
+# in current directory and goes down. 
+# Changed files outside current dir? Sucks to be you!
+# Find the top of Git repo
+currentdir=`pwd`
+top=`git rev-parse --show-toplevel`
+if [ -x "${top}/tools/git-ssh.sh" ]; then
+  export GIT_SSH="${top}/tools/git-ssh.sh"
+fi
+
+echo "Updating from master"
+git pull
+echo
+cd $top
+echo "Commiting changes to local copy"
+git add -A
+if [ "$1" = "" ]; then
+  comment="I was lazy and irresponsible and did not put a commit message here.  Kick me, please."
+else
+  comment="$1"
+fi
+git commit -m "$comment"
+echo
+echo "Pushing to master"
+if [ "$?" = "0" ]; then 
+  git push
+fi
+cd $currentdir
