@@ -1,0 +1,16 @@
+[Unit]
+Description=Docker container haproxy service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+#EnvironmentFile=/etc/sysconfig/docker_scripts
+#ExecStartPre=/usr/bin/get_config.sh cinder-scheduler
+ExecStart=/usr/bin/docker start -a docker run -d --name haproxy -p 80:80 -p 443:443 -v /data/etc/haproxy:/usr/local/etc/haproxy haproxy:alpine
+ExecStop=/usr/bin/docker stop -t 2 haproxy; /usr/bin/docker rm haproxy
+ExecReload=/usr/bin/docker kill -s HUP haproxy
+
+[Install]
+WantedBy=multi-user.target
+
