@@ -6,8 +6,9 @@ Requires=docker.service
 [Service]
 Restart=always
 EnvironmentFile=-/etc/default/docker-haproxy
-ExecStart=/usr/bin/docker run --name haproxy $DOCKER_OPTS haproxy:alpine
-ExecStop=/usr/bin/docker stop -t 2 haproxy; /usr/bin/docker rm haproxy
+ExecStartPre=-/usr/bin/docker stop haproxy
+ExecStartPre=-/usr/bin/docker rm haproxy
+ExecStart=/usr/bin/docker run --rm --name haproxy $DOCKER_OPTS haproxy:alpine
 ExecReload=/usr/bin/docker kill -s HUP haproxy
 
 [Install]

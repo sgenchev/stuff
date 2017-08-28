@@ -6,8 +6,9 @@ Requires=docker.service
 [Service]
 Restart=always
 EnvironmentFile=-/etc/default/docker-consul
-ExecStart=/usr/bin/docker run --name consul --net=host $DOCKER_OPTS consul agent -ui
-ExecStop=/usr/bin/docker stop -t 2 consul; /usr/bin/docker rm consul
+ExecStartPre=-/usr/bin/docker stop consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStart=/usr/bin/docker run --rm --name consul --net=host $DOCKER_OPTS consul agent -ui
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Script to add my docker services
+unitfilesdir='/data/repos/stuff/systemd'
+envdir='/etc/default'
+systemunitdir='/lib/systemd/system'
+
+name=$1
+if [ -f "${unitfilesdir}/docker-${name}.service" ]; then
+  echo "Adding docker-${name} service"
+  rm -f ${systemunitdir}/docker-${name}.service
+  ln -s ${unitfilesdir}/docker-${name}.service ${systemunitdir}/docker-${name}.service 
+  systemctl daemon-reload
+  systemctl enable docker-${name}.service
+else
+  echo "${unitfilesdir}/docker-${name}.service not found. Quitting"
+  exit 1
+fi
+
+if [ -f "${unitfilesdir}/docker-${name}" ]; then
+  echo "Adding environment file docker-${name}"
+  rm -f ${envdir}/docker-${name}
+  ln -s ${unitfilesdir}/docker-${name} ${envdir}/docker-${name}
+fi
+
