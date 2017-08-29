@@ -1,0 +1,13 @@
+Unit]
+Description=consul-template
+Requires=network-online.target
+After=network-online.target docker-consul.service
+ 
+[Service]
+EnvironmentFile=-/etc/default/consul-template
+Restart=always
+RestartSec=10
+ExecStart=/usr/local/bin/consul-template $OPTIONS -config=/etc/consul-template/config/
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,1 +1,1 @@
-DOCKER_OPTS="-v /data/consul:/consul/data -e 'CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"bootstrap\": true, \"server\": true, \"bind_addr\": \"127.0.0.1\"}'"
+DOCKER_OPTS="-v /data/consul:/consul/data -e 'CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": false, \"bootstrap\": true, \"server\": true, \"bind_addr\": \"192.168.101.50\", \"client_addr\": \"192.168.101.50\", \"datacenter\": \"genchevs\"}'"
