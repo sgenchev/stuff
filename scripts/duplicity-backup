@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$2" = "" ]; then
+  echo "Specify both source and target folder"
+  exit 1
+fi
+export GOOGLE_DRIVE_SETTINGS=/root/.duplicity/credentials
+duplicity --exclude-filelist /root/.duplicity/ignore $1 gdocs://genchevs.shared@gmail.com/backup/$2

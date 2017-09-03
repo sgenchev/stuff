@@ -22,10 +22,12 @@ frontend everything
   acl consul hdr(host) -i consul.ext.genchev.us
   acl esxi hdr(host) -i esxi.genchev.us
   acl esxi hdr(host) -i esxi.ext.genchev.us
+  acl firewall hdr(host) -i firewall.genchev.us
 
   use_backend jenkins.genchev.us.8080 if jenkins
   use_backend consul.genchev.us if consul
   use_backend esxi.genchev.us if esxi
+  use_backend firewall.genchev.us if firewall
 
 backend jenkins.genchev.us.8080
   mode http
@@ -42,3 +44,11 @@ backend esxi.genchev.us
   mode http
   balance roundrobin
   server esx0.genchev.us 192.168.101.140:443 ssl verify none
+
+backend firewall.genchev.us
+  mode http
+  balance roundrobin
+  #server firewall.genchev.us 192.168.101.1:443 ssl verify none
+  #server firewall.genchev.us 192.168.101.52:81 ssl verify none
+  server firewall.genchev.us 192.168.101.52:82 
+
