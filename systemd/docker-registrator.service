@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker container registrator service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+EnvironmentFile=-/etc/default/docker-registrator
+ExecStartPre=-/usr/bin/docker stop registrator
+ExecStartPre=-/usr/bin/docker rm registrator
+ExecStart=/usr/bin/docker run --rm --name registrator $DOCKER_OPTS gliderlabs/registrator:latest consul://192.168.101.50:8500
+
+[Install]
+WantedBy=multi-user.target
+

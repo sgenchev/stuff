@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Backup specifically for our household
+case $1 in
+
+jenkins)
+  SOURCE='/data/jenkins_home'
+  FOLDER='jenkins'
+  ;;
+vinnie)
+  mkdir -p /mnt/smb/vinnie
+  umount /mnt/smb/vinnie
+  mount |grep HUNNYPOT 
+  if [ "$?" = "0" ]; then
+    echo "Looks like it is still mounted"
+    exit 1
+  fi
+  mount -t cifs //vinnie.genchev.us/HUNNYPOT /mnt/smb/vinnie \
+        -o ro,username=foo,password=bar
+  SOURCE='/mnt/smb/vinnie'
+  FOLDER='smb'
+  ;;
+*)
+  echo "I do not know that location yet"
+  exit 1
+  ;;
+esac
+export PASSPHRASE
+/data/repos/stuff/run-duplicity $SOURCE $FOLDER
