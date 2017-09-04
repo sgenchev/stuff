@@ -1,3 +1,3 @@
 #DOCKER_OPTS='-p 127.0.0.1:8080:8080 -p 50000:50000 -v /data/jenkins_home:/var/jenkins_home'
-DOCKER_OPTS='-P -v /data/jenkins_home:/var/jenkins_home'
+DOCKER_OPTS='-P -v /data/jenkins_home:/var/jenkins_home -v /etc/localtime:/etc/localtime -v /etc/timezone:/etc/timezone'
 #DOCKER_OPTS='-p 127.0.0.1:8080:8080 -p 50000:50000'

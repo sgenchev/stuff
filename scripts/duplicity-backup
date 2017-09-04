@@ -1,7 +1,15 @@
 #!/bin/bash
-if [ "$2" = "" ]; then
+if [ "$3" = "" ]; then
   echo "Specify both source and target folder"
   exit 1
 fi
-export GOOGLE_DRIVE_SETTINGS=/root/.duplicity/credentials
-duplicity --exclude-filelist /root/.duplicity/ignore $1 gdocs://genchevs.shared@gmail.com/backup/$2
+#duplicity --exclude-filelist /root/.duplicity/ignore $1 gdocs://genchevs.shared@gmail.com/backup/$2
+docker run --rm --user 0 \
+    -e GOOGLE_DRIVE_SETTINGS=/home/duplicity/credentials \
+    -e PASSPHRASE=$3 \
+    -v ${1}:/data:ro \
+    -v /root/duplicity:/home/duplicity \
+    -v /etc/localtime:/etc/localtime \
+    -v /etc/timezone:/etc/timezone \
+    wernight/duplicity \
+    duplicity --full-if-older-than=6M --allow-source-mismatch --exclude-filelist /home/duplicity/ignore /data gdocs://genchevs.shared@gmail.com/backup/$2 
